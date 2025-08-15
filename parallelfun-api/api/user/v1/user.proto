@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package user.v1;
+
+
+option go_package = "parallelfun-api/api/user/v1;v1";
+
+
+service User {
+  rpc GetUser (GetUserRequest) returns (GetUserReply);
+}
+
+
+
+message GetUserRequest {
+  string id = 1;
+}
+message GetUserReply {
+  string id = 1;
+  string name = 2;
+}
