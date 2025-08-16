@@ -1,10 +1,15 @@
 package biz
 
+import (
+	"gorm.io/gorm"
+	"time"
+)
+
 type User struct {
-	Id        int64
+	gorm.Model
 	Name      string
 	Email     string
 	Password  string
-	CreatedAt int64
-	UpdatedAt int64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

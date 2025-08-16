@@ -3,8 +3,8 @@ package biz
 import "context"
 
 type UserRepo interface {
-	FindByID(ctx context.Context, id int64) (*User, error)
-
+	FindByID(ctx context.Context, id uint) (*User, error)
+	FindByName(ctx context.Context, name string) (*User, error)
 	ListAll(ctx context.Context) ([]*User, error)
 
 	Save(ctx context.Context, u *User) (*User, error)

@@ -1,0 +1,144 @@
+syntax="proto3";
+
+package article.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "parallelfun-api/api/article/v1;v1";
+
+service Article {
+  rpc GetArticleById (GetArticleByIdRequest) returns (GetArticleByIdReply) {
+    option (google.api.http) = {
+      get: "/v1/articles/{id}"
+    };
+  }
+  rpc GetArticleList (GetArticleListRequest) returns (GetArticleListReply) {
+    option (google.api.http) = {
+      get: "/v1/articles"
+    };
+  }
+  rpc NewArticle (NewArticleRequest) returns (NewArticleReply) {
+    option (google.api.http) = {
+      post: "/v1/articles"
+      body: "*"
+    };
+  }
+  rpc UpdateArticle (UpdateArticleRequest) returns (UpdateArticleReply) {
+    option (google.api.http) = {
+      put: "/v1/articles/{id}"
+      body: "*"
+    };
+  }
+  rpc DeleteArticle (DeleteArticleRequest) returns (DeleteArticleReply) {
+    option (google.api.http) = {
+      delete: "/v1/articles/{id}"
+    };
+  }
+  rpc GetArticleListByUserId (GetArticleListByUserIdRequest) returns (GetArticleListByUserIdReply) {
+    option (google.api.http) = {
+      get: "/v1/articles/user/{user_id}"
+    };
+  }
+  rpc GetArticleListByTitle (GetArticleListByTitleRequest) returns (GetArticleListByTitleReply) {
+    option (google.api.http) = {
+      get: "/v1/articles/title/{title}"
+    };
+  }
+}
+
+message Author {
+  uint64 id = 1;
+  string name = 2;
+}
+
+//message ArticleList {
+//  repeated ArticleInfo list = 1;
+//}
+
+message ArticleInfo {
+  uint64 id = 1;
+  string title = 2;
+  string content = 3;
+  Author author = 4;
+}
+
+// GetArticleById 相关消息
+message GetArticleByIdRequest {
+  uint64 id = 1;
+}
+
+message GetArticleByIdReply {
+  ArticleInfo article = 1;
+}
+
+// GetArticleList 相关消息
+message GetArticleListRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+
+message GetArticleListReply {
+  repeated ArticleInfo articles = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}
+
+// NewArticle 相关消息
+message NewArticleRequest {
+  string title = 1;
+  string content = 2;
+  uint64 author_id = 3;
+}
+
+message NewArticleReply {
+  bool success = 1;
+  uint64 id = 2;
+  uint64 author_id = 3;
+}
+
+// UpdateArticle 相关消息
+message UpdateArticleRequest {
+  uint64 id = 1;
+  string title = 2;
+  string content = 3;
+}
+
+message UpdateArticleReply {
+  ArticleInfo article = 1;
+}
+
+// DeleteArticle 相关消息
+message DeleteArticleRequest {
+  uint64 id = 1;
+}
+
+message DeleteArticleReply {
+  bool success = 1;
+}
+
+// GetArticleListByUserId 相关消息
+message GetArticleListByUserIdRequest {
+  uint64 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message GetArticleListByUserIdReply {
+  repeated ArticleInfo articles = 1;
+  int32 total = 2;
+}
+
+// GetArticleListByTitle 相关消息
+message GetArticleListByTitleRequest {
+  string title = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+}
+
+message GetArticleListByTitleReply {
+  repeated ArticleInfo articles = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+}

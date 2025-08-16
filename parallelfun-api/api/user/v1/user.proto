@@ -2,20 +2,79 @@ syntax = "proto3";
 
 package user.v1;
 
+import "google/api/annotations.proto";
 
 option go_package = "parallelfun-api/api/user/v1;v1";
 
-
 service User {
-  rpc GetUser (GetUserRequest) returns (GetUserReply);
+  rpc GetUser (GetUserRequest) returns (GetUserReply) {
+    option (google.api.http) = {
+      get: "/v1/users/{id}"
+    };
+  }
+
+  rpc NewUser (NewUserRequest) returns (NewUserReply) {
+    option (google.api.http) = {
+      post: "/v1/users"
+      body: "*"
+    };
+  }
+
+  rpc Register (RegisterRequest) returns (RegisterReply) {
+    option (google.api.http) = {
+      post: "/v1/register"
+      body: "*"
+    };
+  }
+
+  rpc Login (LoginRequest) returns (LoginReply) {
+    option (google.api.http) = {
+      post: "/v1/login"
+      body: "*"
+    };
+  }
 }
-
-
 
 message GetUserRequest {
-  string id = 1;
+  uint64 id = 1;
 }
 message GetUserReply {
-  string id = 1;
+  uint64 id = 1;
   string name = 2;
+}
+
+message NewUserRequest{
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message NewUserReply{
+  uint64 id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message RegisterRequest{
+  string name = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message RegisterReply{
+  uint64 id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message LoginRequest{
+  string email = 1;
+  string password = 2;
+}
+
+message LoginReply{
+  uint64 id = 1;
+  string name = 2;
+  string email = 3;
+  string token = 4;
 }
