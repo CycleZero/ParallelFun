@@ -39,3 +39,11 @@ message Data {
   Database database = 1;
   Redis redis = 2;
 }
+
+message Registry {
+  message Nacos {
+    string address = 1;
+    uint64 port = 2;
+  }
+  Nacos nacos = 1;
+}
