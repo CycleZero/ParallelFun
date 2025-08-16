@@ -22,6 +22,8 @@ go.work
 *.a
 *.so
 wire_gen.go
+*.pb.go
+
 
 # OS General
 Thumbs.db

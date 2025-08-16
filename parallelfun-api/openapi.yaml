@@ -3,47 +3,19 @@
 
 openapi: 3.0.3
 info:
-    title: Article API
+    title: User API
     version: 0.0.1
 paths:
-    /v1/articles:
-        get:
-            tags:
-                - Article
-            operationId: Article_GetArticleList
-            parameters:
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: pageSize
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetArticleListReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
+    /v1/login:
         post:
             tags:
-                - Article
-            operationId: Article_NewArticle
+                - User
+            operationId: User_Login
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/NewArticleRequest'
+                            $ref: '#/components/schemas/LoginRequest'
                 required: true
             responses:
                 "200":
@@ -51,120 +23,23 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/NewArticleReply'
+                                $ref: '#/components/schemas/LoginReply'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-    /v1/articles/title/{title}:
-        get:
+    /v1/register:
+        post:
             tags:
-                - Article
-            operationId: Article_GetArticleListByTitle
-            parameters:
-                - name: title
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: pageSize
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetArticleListByTitleReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /v1/articles/user/{userId}:
-        get:
-            tags:
-                - Article
-            operationId: Article_GetArticleListByUserId
-            parameters:
-                - name: userId
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-                - name: page
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-                - name: pageSize
-                  in: query
-                  schema:
-                    type: integer
-                    format: int32
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetArticleListByUserIdReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /v1/articles/{id}:
-        get:
-            tags:
-                - Article
-            operationId: Article_GetArticleById
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GetArticleByIdReply'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-        put:
-            tags:
-                - Article
-            operationId: Article_UpdateArticle
-            parameters:
-                - name: id
-                  in: path
-                  required: true
-                  schema:
-                    type: string
+                - User
+            operationId: User_Register
             requestBody:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/UpdateArticleRequest'
+                            $ref: '#/components/schemas/RegisterRequest'
                 required: true
             responses:
                 "200":
@@ -172,17 +47,42 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/UpdateArticleReply'
+                                $ref: '#/components/schemas/RegisterReply'
                 default:
                     description: Default error response
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
-        delete:
+    /v1/users:
+        post:
             tags:
-                - Article
-            operationId: Article_DeleteArticle
+                - User
+            operationId: User_NewUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/NewUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/NewUserReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /v1/users/{id}:
+        get:
+            tags:
+                - User
+            operationId: User_GetUser
             parameters:
                 - name: id
                   in: path
@@ -195,7 +95,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/DeleteArticleReply'
+                                $ref: '#/components/schemas/GetUserReply'
                 default:
                     description: Default error response
                     content:
@@ -204,76 +104,13 @@ paths:
                                 $ref: '#/components/schemas/Status'
 components:
     schemas:
-        ArticleInfo:
-            type: object
-            properties:
-                id:
-                    type: string
-                title:
-                    type: string
-                content:
-                    type: string
-                author:
-                    $ref: '#/components/schemas/Author'
-        Author:
+        GetUserReply:
             type: object
             properties:
                 id:
                     type: string
                 name:
                     type: string
-        DeleteArticleReply:
-            type: object
-            properties:
-                success:
-                    type: boolean
-        GetArticleByIdReply:
-            type: object
-            properties:
-                article:
-                    $ref: '#/components/schemas/ArticleInfo'
-        GetArticleListByTitleReply:
-            type: object
-            properties:
-                articles:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ArticleInfo'
-                total:
-                    type: integer
-                    format: int32
-                page:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
-        GetArticleListByUserIdReply:
-            type: object
-            properties:
-                articles:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ArticleInfo'
-                total:
-                    type: integer
-                    format: int32
-        GetArticleListReply:
-            type: object
-            properties:
-                articles:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/ArticleInfo'
-                total:
-                    type: integer
-                    format: int32
-                page:
-                    type: integer
-                    format: int32
-                pageSize:
-                    type: integer
-                    format: int32
         GoogleProtobufAny:
             type: object
             properties:
@@ -282,25 +119,60 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-        NewArticleReply:
+        LoginReply:
             type: object
             properties:
-                success:
-                    type: boolean
                 id:
                     type: string
-                authorId:
+                name:
                     type: string
-        NewArticleRequest:
+                email:
+                    type: string
+                token:
+                    type: string
+        LoginRequest:
             type: object
             properties:
-                title:
+                email:
                     type: string
-                content:
+                password:
                     type: string
-                authorId:
+        NewUserReply:
+            type: object
+            properties:
+                id:
                     type: string
-            description: NewArticle 相关消息
+                name:
+                    type: string
+                email:
+                    type: string
+        NewUserRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+        RegisterReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+        RegisterRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
         Status:
             type: object
             properties:
@@ -317,20 +189,5 @@ components:
                         $ref: '#/components/schemas/GoogleProtobufAny'
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
-        UpdateArticleReply:
-            type: object
-            properties:
-                article:
-                    $ref: '#/components/schemas/ArticleInfo'
-        UpdateArticleRequest:
-            type: object
-            properties:
-                id:
-                    type: string
-                title:
-                    type: string
-                content:
-                    type: string
-            description: UpdateArticle 相关消息
 tags:
-    - name: Article
+    - name: User
