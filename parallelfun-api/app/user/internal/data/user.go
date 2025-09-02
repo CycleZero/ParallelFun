@@ -28,6 +28,7 @@ func (r *userRepo) FindByID(ctx context.Context, id uint) (*biz.User, error) {
 func (r *userRepo) ListAll(ctx context.Context) ([]*biz.User, error) {
 	var u []*biz.User
 	r.data.db.Find(&u)
+
 	return u, nil
 }
 

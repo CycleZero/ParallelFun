@@ -3,6 +3,7 @@ package jwt
 import (
 	"github.com/golang-jwt/jwt/v4"
 	"parallelfun-api/app/user/internal/biz"
+	"strconv"
 	"time"
 )
 
@@ -17,7 +18,7 @@ type Claims struct {
 
 func GenerateToken(user *biz.User) string {
 	claim := Claims{
-		UserID:    user.ID,
+		UserID:    strconv.Itoa(int(user.ID)),
 		UserName:  user.Name,
 		UserEmail: user.Email,
 		RegisteredClaims: jwt.RegisteredClaims{

@@ -31,7 +31,7 @@ func NewData(c *conf.Data, logger log.Logger, ucli userv1.UserClient) (*Data, fu
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
-	dsn := "user=root password=poyuan666 dbname=parallelfun port=35432 sslmode=disable TimeZone=Asia/Shanghai"
+	dsn := "host=server.poyuan233.cn port=35432 user=root password=poyuan666 dbname=parallelfun port=35432 sslmode=disable TimeZone=Asia/Shanghai"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -42,7 +42,7 @@ func NewData(c *conf.Data, logger log.Logger, ucli userv1.UserClient) (*Data, fu
 func NewUserClient(conf *conf.Registry, dis registry.Discovery) userv1.UserClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
-		grpc.WithEndpoint("discovery:///beer.user.service"),
+		grpc.WithEndpoint("discovery:///parallelfun.service.user.grpc"),
 		grpc.WithDiscovery(dis),
 		//grpc.WithMiddleware(
 		//	tracing.Client(tracing.WithTracerProvider(tp)),
@@ -53,8 +53,11 @@ func NewUserClient(conf *conf.Registry, dis registry.Discovery) userv1.UserClien
 		//),
 	)
 	if err != nil {
-		panic(err)
+		//panic(err)
+		log.Error("new user client error", err)
+		return nil
 	}
+
 	c := userv1.NewUserClient(conn)
 	return c
 }

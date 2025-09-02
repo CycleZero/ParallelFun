@@ -21,9 +21,14 @@ func NewRegistrar(conf *conf.Registry) registry.Registrar {
 	sc := []constant.ServerConfig{
 		*constant.NewServerConfig(conf.Nacos.GetAddress(), conf.Nacos.GetPort()),
 	}
+	cc := &constant.ClientConfig{
+		Username: conf.Nacos.GetUsername(), // 获取用户名
+		Password: conf.Nacos.GetPassword(), // 获取密码
+	}
 	client, err := clients.NewNamingClient(
 		vo.NacosClientParam{
 			ServerConfigs: sc,
+			ClientConfig:  cc,
 		},
 	)
 	if err != nil {
@@ -37,9 +42,14 @@ func NewDiscovery(conf *conf.Registry) registry.Discovery {
 	sc := []constant.ServerConfig{
 		*constant.NewServerConfig(conf.Nacos.GetAddress(), conf.Nacos.GetPort()),
 	}
+	cc := &constant.ClientConfig{
+		Username: conf.Nacos.GetUsername(), // 获取用户名
+		Password: conf.Nacos.GetPassword(), // 获取密码
+	}
 	client, err := clients.NewNamingClient(
 		vo.NacosClientParam{
 			ServerConfigs: sc,
+			ClientConfig:  cc,
 		},
 	)
 	if err != nil {
