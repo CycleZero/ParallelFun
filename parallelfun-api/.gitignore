@@ -39,3 +39,5 @@ bin/
 .vscode/
 .idea/
 *.swp
+
+cache/
