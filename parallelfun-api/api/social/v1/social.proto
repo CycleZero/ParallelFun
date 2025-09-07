@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package api.social.v1;
+
+option go_package = "parallelfun-api/api/social/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.social.v1";
+
+service Social {
+	rpc CreateSocial (CreateSocialRequest) returns (CreateSocialReply);
+	rpc UpdateSocial (UpdateSocialRequest) returns (UpdateSocialReply);
+	rpc DeleteSocial (DeleteSocialRequest) returns (DeleteSocialReply);
+	rpc GetSocial (GetSocialRequest) returns (GetSocialReply);
+	rpc ListSocial (ListSocialRequest) returns (ListSocialReply);
+}
+
+message CreateSocialRequest {}
+message CreateSocialReply {}
+
+message UpdateSocialRequest {}
+message UpdateSocialReply {}
+
+message DeleteSocialRequest {}
+message DeleteSocialReply {}
+
+message GetSocialRequest {}
+message GetSocialReply {}
+
+message ListSocialRequest {}
+message ListSocialReply {}

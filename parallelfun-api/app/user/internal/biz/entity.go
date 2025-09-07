@@ -10,6 +10,16 @@ type User struct {
 	Name      string
 	Email     string
 	Password  string
+	Role      Role
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+type Role int
+
+const (
+	Unknown Role = iota
+	Admin
+	Default
+	Guest
+)

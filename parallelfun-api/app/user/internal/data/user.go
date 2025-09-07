@@ -12,6 +12,15 @@ type userRepo struct {
 	log *log.Helper
 }
 
+func (r *userRepo) GetRole(ctx context.Context, id uint) (biz.Role, error) {
+	var role biz.Role
+	err := r.data.db.Where("id=?", id).Select("role").First(&role).Error
+	if err != nil {
+		return biz.Unknown, err
+	}
+	return role, err
+}
+
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	return &userRepo{
 		data: data,

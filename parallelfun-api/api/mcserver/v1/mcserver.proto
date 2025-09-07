@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package api.mcserver.v1;
+
+option go_package = "parallelfun-api/api/mcserver/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.mcserver.v1";
+
+service Mcserver {
+	rpc CreateMcserver (CreateMcserverRequest) returns (CreateMcserverReply);
+	rpc UpdateMcserver (UpdateMcserverRequest) returns (UpdateMcserverReply);
+	rpc DeleteMcserver (DeleteMcserverRequest) returns (DeleteMcserverReply);
+	rpc GetMcserver (GetMcserverRequest) returns (GetMcserverReply);
+	rpc ListMcserver (ListMcserverRequest) returns (ListMcserverReply);
+}
+
+message CreateMcserverRequest {}
+message CreateMcserverReply {}
+
+message UpdateMcserverRequest {}
+message UpdateMcserverReply {}
+
+message DeleteMcserverRequest {}
+message DeleteMcserverReply {}
+
+message GetMcserverRequest {}
+message GetMcserverReply {}
+
+message ListMcserverRequest {}
+message ListMcserverReply {}
