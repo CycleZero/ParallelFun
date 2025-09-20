@@ -2,9 +2,13 @@ syntax = "proto3";
 
 package api.social.v1;
 
+
+import "google/protobuf/timestamp.proto";
 option go_package = "parallelfun-api/api/social/v1;v1";
 option java_multiple_files = true;
 option java_package = "api.social.v1";
+
+
 
 service Social {
 	rpc CreateSocial (CreateSocialRequest) returns (CreateSocialReply);
@@ -12,6 +16,17 @@ service Social {
 	rpc DeleteSocial (DeleteSocialRequest) returns (DeleteSocialReply);
 	rpc GetSocial (GetSocialRequest) returns (GetSocialReply);
 	rpc ListSocial (ListSocialRequest) returns (ListSocialReply);
+}
+
+
+message ChatMessageInfo{
+	uint64 id = 1;
+	uint64 sender_id = 2;
+	uint64 receiver_id = 3;
+	string type = 4;
+	string content = 5;
+	google.protobuf.Timestamp created_at = 6;
+	google.protobuf.Timestamp updated_at = 7;
 }
 
 message CreateSocialRequest {}

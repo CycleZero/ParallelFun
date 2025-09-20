@@ -1,13 +1,14 @@
 syntax = "proto3";
 package kratos.api;
 
-option go_package = "parallelfun-api/app/social/internal/conf;conf";
+option go_package = "parallelfun-api/app/user/internal/conf;conf";
 
 import "google/protobuf/duration.proto";
 
 message Bootstrap {
   Server server = 1;
   Data data = 2;
+  Registry registry = 3;
 }
 
 message Server {
@@ -29,6 +30,7 @@ message Data {
   message Database {
     string driver = 1;
     string source = 2;
+    string dsn=3;
   }
   message Redis {
     string network = 1;
@@ -38,4 +40,15 @@ message Data {
   }
   Database database = 1;
   Redis redis = 2;
+
+}
+
+message Registry {
+  message Nacos {
+    string address = 1;
+    uint64 port = 2;
+    string username=3;
+    string password=4;
+  }
+  Nacos nacos = 1;
 }

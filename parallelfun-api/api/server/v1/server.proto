@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+package api.server.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "parallelfun-api/api/server/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.server.v1";
+
+service ServerService {
+	rpc CreateServer (CreateServerRequest) returns (CreateServerReply);
+	rpc UpdateServer (UpdateServerRequest) returns (UpdateServerReply);
+	rpc DeleteServer (DeleteServerRequest) returns (DeleteServerReply);
+	rpc GetServer (GetServerRequest) returns (GetServerReply);
+	rpc ListServer (ListServerRequest) returns (ListServerReply);
+} 
+
+
+message Server {
+	uint64 id = 1;
+	string name = 2;
+	string address = 3;
+	uint32 port = 4;
+	int32 status = 5;
+	uint64 owner_id = 6;
+	google.protobuf.Timestamp created_at = 7;
+	google.protobuf.Timestamp updated_at = 8;
+	google.protobuf.Timestamp deleted_at = 9;
+}
+
+message CreateServerRequest {
+	uint64 owner_id = 1;
+	string name = 2;
+	string address = 3;
+	uint32 port = 4;
+}
+message CreateServerReply {
+	uint64 id = 1;
+	string name = 2;
+	uint64 owner_id = 3;
+}
+
+message UpdateServerRequest {
+	uint64 id = 1;
+	string name = 2;
+	string address = 3;
+	uint32 port = 4;
+	int32 status = 5;
+}
+message UpdateServerReply {
+	uint64 id = 1;
+	string name = 2;
+	string address = 3;
+	uint32 port = 4;
+	int32 status = 5;
+}
+
+message DeleteServerRequest {
+	uint64 id = 1;
+}
+message DeleteServerReply {
+	bool success = 1;
+
+}
+
+message GetServerRequest {}
+message GetServerReply {}
+
+message ListServerRequest {}
+message ListServerReply {}

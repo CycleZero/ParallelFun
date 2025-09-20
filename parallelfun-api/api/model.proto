@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "parallelfun-api/api;api";
+option java_multiple_files = true;
+option java_package = "api";
+import "google/protobuf/timestamp.proto";
+service Model {
+	rpc CreateModel (CreateModelRequest) returns (CreateModelReply);
+	rpc UpdateModel (UpdateModelRequest) returns (UpdateModelReply);
+	rpc DeleteModel (DeleteModelRequest) returns (DeleteModelReply);
+	rpc GetModel (GetModelRequest) returns (GetModelReply);
+	rpc ListModel (ListModelRequest) returns (ListModelReply);
+}
+
+message Model {
+	uint64 id = 1;
+	google.protobuf.Timestamp created_at = 7;
+	google.protobuf.Timestamp updated_at = 8;
+	google.protobuf.Timestamp deleted_at = 9;
+}
+
+message CreateModelRequest {}
+message CreateModelReply {}
+
+message UpdateModelRequest {}
+message UpdateModelReply {}
+
+message DeleteModelRequest {}
+message DeleteModelReply {}
+
+message GetModelRequest {}
+message GetModelReply {}
+
+message ListModelRequest {}
+message ListModelReply {}

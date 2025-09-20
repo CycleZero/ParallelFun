@@ -2,8 +2,8 @@ package server
 
 import (
 	v1 "parallelfun-api/api/user/v1"
-	"parallelfun-api/app/user/internal/conf"
 	"parallelfun-api/app/user/internal/service"
+	"parallelfun-api/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"

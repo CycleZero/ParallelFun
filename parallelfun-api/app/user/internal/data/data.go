@@ -3,7 +3,7 @@ package data
 import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"parallelfun-api/app/user/internal/conf"
+	"parallelfun-api/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
