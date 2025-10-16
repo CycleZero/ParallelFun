@@ -6,11 +6,11 @@
 package main
 
 import (
-	"parallelfun-api/app/social/internal/biz"
-	"parallelfun-api/app/social/internal/conf"
-	"parallelfun-api/app/social/internal/data"
-	"parallelfun-api/app/social/internal/server"
-	"parallelfun-api/app/social/internal/service"
+	"parallelfun-api/app/server/internal/biz"
+	"parallelfun-api/app/server/internal/data"
+	"parallelfun-api/app/server/internal/server"
+	"parallelfun-api/app/server/internal/service"
+	"parallelfun-api/conf"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

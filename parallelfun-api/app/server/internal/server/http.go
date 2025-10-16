@@ -27,6 +27,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.ServerServiceService, logger
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+	v1.RegisterServerServiceHTTPServer(srv, greeter)
 	return srv
 }

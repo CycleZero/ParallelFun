@@ -7,7 +7,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
-	"parallelfun-api/app/article/internal/conf"
+	"parallelfun-api/conf"
 )
 
 // ProviderSet is server providers.

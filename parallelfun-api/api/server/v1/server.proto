@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package api.server.v1;
 
+import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "parallelfun-api/api/server/v1;v1";
@@ -9,12 +10,38 @@ option java_multiple_files = true;
 option java_package = "api.server.v1";
 
 service ServerService {
-	rpc CreateServer (CreateServerRequest) returns (CreateServerReply);
-	rpc UpdateServer (UpdateServerRequest) returns (UpdateServerReply);
-	rpc DeleteServer (DeleteServerRequest) returns (DeleteServerReply);
-	rpc GetServer (GetServerRequest) returns (GetServerReply);
-	rpc ListServer (ListServerRequest) returns (ListServerReply);
-} 
+	rpc CreateServer (CreateServerRequest) returns (CreateServerReply) {
+		option (google.api.http) = {
+			post: "/v1/servers"
+			body: "*"
+		};
+	}
+
+	rpc UpdateServer (UpdateServerRequest) returns (UpdateServerReply) {
+		option (google.api.http) = {
+			post: "/v1/servers/{id}"
+			body: "*"
+		};
+	}
+
+	rpc DeleteServer (DeleteServerRequest) returns (DeleteServerReply) {
+		option (google.api.http) = {
+			delete: "/v1/servers/{id}"
+		};
+	}
+
+	rpc GetServer (GetServerRequest) returns (GetServerReply) {
+		option (google.api.http) = {
+			get: "/v1/servers/{id}"
+		};
+	}
+
+	rpc ListServer (ListServerRequest) returns (ListServerReply) {
+		option (google.api.http) = {
+			get: "/v1/servers"
+		};
+	}
+}
 
 
 message Server {
@@ -61,11 +88,18 @@ message DeleteServerRequest {
 }
 message DeleteServerReply {
 	bool success = 1;
-
 }
 
-message GetServerRequest {}
-message GetServerReply {}
+message GetServerRequest {
+	uint64 id = 1;
+}
+message GetServerReply {
+	Server server = 1;
+}
 
-message ListServerRequest {}
-message ListServerReply {}
+message ListServerRequest {
+	uint64 owner_id = 1;
+}
+message ListServerReply {
+	repeated Server servers = 1;
+}

@@ -30,7 +30,7 @@ message Data {
   message Database {
     string driver = 1;
     string source = 2;
-    string dsn=3;
+    string dsn = 3;
   }
   message Redis {
     string network = 1;
@@ -38,9 +38,17 @@ message Data {
     google.protobuf.Duration read_timeout = 3;
     google.protobuf.Duration write_timeout = 4;
   }
+  message  MinIO{
+    string endpoint = 1;
+    string accessKeyID = 2;
+    string secretAccessKey=3;
+    bool use_ssl = 4;
+  }
   Database database = 1;
-  Redis redis = 2;
-
+  Database readDB=2;
+  Database writeDB=3;
+  Redis redis = 4;
+  MinIO minio = 5;
 }
 
 message Registry {
@@ -52,3 +60,6 @@ message Registry {
   }
   Nacos nacos = 1;
 }
+
+
+

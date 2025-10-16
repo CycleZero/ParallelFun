@@ -5,6 +5,587 @@ openapi: 3.0.3
 info:
     title: ""
     version: 0.0.1
-paths: {}
+paths:
+    /v1/articles:
+        get:
+            tags:
+                - Article
+            operationId: Article_GetArticleList
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/article.v1.GetArticleListReply'
+        post:
+            tags:
+                - Article
+            operationId: Article_NewArticle
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/article.v1.NewArticleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/article.v1.NewArticleReply'
+    /v1/articles/title/{title}:
+        get:
+            tags:
+                - Article
+            operationId: Article_GetArticleListByTitle
+            parameters:
+                - name: title
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/article.v1.GetArticleListByTitleReply'
+    /v1/articles/user/{userId}:
+        get:
+            tags:
+                - Article
+            operationId: Article_GetArticleListByUserId
+            parameters:
+                - name: userId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/article.v1.GetArticleListByUserIdReply'
+    /v1/articles/{id}:
+        get:
+            tags:
+                - Article
+            operationId: Article_GetArticleById
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/article.v1.GetArticleByIdReply'
+        put:
+            tags:
+                - Article
+            operationId: Article_UpdateArticle
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/article.v1.UpdateArticleRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/article.v1.UpdateArticleReply'
+        delete:
+            tags:
+                - Article
+            operationId: Article_DeleteArticle
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/article.v1.DeleteArticleReply'
+    /v1/login:
+        post:
+            tags:
+                - User
+            operationId: User_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.LoginReply'
+    /v1/register:
+        post:
+            tags:
+                - User
+            operationId: User_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.RegisterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.RegisterReply'
+    /v1/servers:
+        get:
+            tags:
+                - ServerService
+            operationId: ServerService_ListServer
+            parameters:
+                - name: ownerId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.ListServerReply'
+        post:
+            tags:
+                - ServerService
+            operationId: ServerService_CreateServer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.server.v1.CreateServerRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.CreateServerReply'
+    /v1/servers/{id}:
+        get:
+            tags:
+                - ServerService
+            operationId: ServerService_GetServer
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.GetServerReply'
+        post:
+            tags:
+                - ServerService
+            operationId: ServerService_UpdateServer
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.server.v1.UpdateServerRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.UpdateServerReply'
+        delete:
+            tags:
+                - ServerService
+            operationId: ServerService_DeleteServer
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.DeleteServerReply'
+    /v1/users:
+        post:
+            tags:
+                - User
+            operationId: User_NewUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.NewUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.NewUserReply'
+    /v1/users/{id}:
+        get:
+            tags:
+                - User
+            operationId: User_GetUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.GetUserReply'
 components:
-    schemas: {}
+    schemas:
+        api.server.v1.CreateServerReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                ownerId:
+                    type: string
+        api.server.v1.CreateServerRequest:
+            type: object
+            properties:
+                ownerId:
+                    type: string
+                name:
+                    type: string
+                address:
+                    type: string
+                port:
+                    type: integer
+                    format: uint32
+        api.server.v1.DeleteServerReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        api.server.v1.GetServerReply:
+            type: object
+            properties:
+                server:
+                    $ref: '#/components/schemas/api.server.v1.Server'
+        api.server.v1.ListServerReply:
+            type: object
+            properties:
+                servers:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.server.v1.Server'
+        api.server.v1.Server:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                address:
+                    type: string
+                port:
+                    type: integer
+                    format: uint32
+                status:
+                    type: integer
+                    format: int32
+                ownerId:
+                    type: string
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+                deletedAt:
+                    type: string
+                    format: date-time
+        api.server.v1.UpdateServerReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                address:
+                    type: string
+                port:
+                    type: integer
+                    format: uint32
+                status:
+                    type: integer
+                    format: int32
+        api.server.v1.UpdateServerRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                address:
+                    type: string
+                port:
+                    type: integer
+                    format: uint32
+                status:
+                    type: integer
+                    format: int32
+        article.v1.ArticleInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
+                author:
+                    $ref: '#/components/schemas/article.v1.Author'
+        article.v1.Author:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+        article.v1.DeleteArticleReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        article.v1.GetArticleByIdReply:
+            type: object
+            properties:
+                article:
+                    $ref: '#/components/schemas/article.v1.ArticleInfo'
+        article.v1.GetArticleListByTitleReply:
+            type: object
+            properties:
+                articles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/article.v1.ArticleInfo'
+                total:
+                    type: integer
+                    format: int32
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        article.v1.GetArticleListByUserIdReply:
+            type: object
+            properties:
+                articles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/article.v1.ArticleInfo'
+                total:
+                    type: integer
+                    format: int32
+        article.v1.GetArticleListReply:
+            type: object
+            properties:
+                articles:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/article.v1.ArticleInfo'
+                total:
+                    type: integer
+                    format: int32
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        article.v1.NewArticleReply:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                id:
+                    type: string
+                authorId:
+                    type: string
+        article.v1.NewArticleRequest:
+            type: object
+            properties:
+                title:
+                    type: string
+                content:
+                    type: string
+                authorId:
+                    type: string
+            description: NewArticle 相关消息
+        article.v1.UpdateArticleReply:
+            type: object
+            properties:
+                article:
+                    $ref: '#/components/schemas/article.v1.ArticleInfo'
+        article.v1.UpdateArticleRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                title:
+                    type: string
+                content:
+                    type: string
+            description: UpdateArticle 相关消息
+        user.v1.GetUserReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+        user.v1.LoginReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                token:
+                    type: string
+        user.v1.LoginRequest:
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+        user.v1.NewUserReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+        user.v1.NewUserRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+        user.v1.RegisterReply:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+        user.v1.RegisterRequest:
+            type: object
+            properties:
+                name:
+                    type: string
+                email:
+                    type: string
+                password:
+                    type: string
+tags:
+    - name: Article
+    - name: ServerService
+    - name: User

@@ -11,6 +11,7 @@ type User struct {
 	Email     string
 	Password  string
 	Role      Role
+	GameId    string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }

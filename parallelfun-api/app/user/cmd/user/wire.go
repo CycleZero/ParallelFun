@@ -7,10 +7,10 @@ package main
 
 import (
 	"parallelfun-api/app/user/internal/biz"
-	"parallelfun-api/app/user/internal/conf"
 	"parallelfun-api/app/user/internal/data"
 	"parallelfun-api/app/user/internal/server"
 	"parallelfun-api/app/user/internal/service"
+	"parallelfun-api/conf"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

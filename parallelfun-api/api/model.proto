@@ -14,7 +14,7 @@ service Model {
 	rpc ListModel (ListModelRequest) returns (ListModelReply);
 }
 
-message Model {
+message ModelInfo {
 	uint64 id = 1;
 	google.protobuf.Timestamp created_at = 7;
 	google.protobuf.Timestamp updated_at = 8;

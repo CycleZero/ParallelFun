@@ -3,6 +3,7 @@ package data
 import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"parallelfun-api/app/server/internal/biz"
 	"parallelfun-api/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -26,6 +27,10 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
+	}
+	err = db.AutoMigrate(&biz.Server{})
+	if err != nil {
+		return nil, nil, err
 	}
 	return &Data{db: db}, cleanup, nil
 }

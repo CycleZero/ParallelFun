@@ -23,7 +23,7 @@ go.work
 *.so
 wire_gen.go
 *.pb.go
-
+config.yaml
 
 # OS General
 Thumbs.db
@@ -41,3 +41,5 @@ bin/
 *.swp
 
 cache/
+
+
