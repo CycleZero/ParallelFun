@@ -1,9 +1,9 @@
 package server
 
 import (
-	v1 "parallelfun-api/app/mcserver/api/helloworld/v1"
-	"parallelfun-api/app/social/internal/conf"
+	v1 "parallelfun-api/api/social/v1"
 	"parallelfun-api/app/social/internal/service"
+	"parallelfun-api/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -27,6 +27,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterGreeterServer(srv, greeter)
+	v1.RegisterSocialServer(srv, greeter)
 	return srv
 }

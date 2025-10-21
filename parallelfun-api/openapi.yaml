@@ -178,6 +178,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/user.v1.LoginReply'
+    /v1/logout:
+        post:
+            tags:
+                - User
+            operationId: User_Logout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.LogoutRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.LogoutReply'
     /v1/register:
         post:
             tags:
@@ -199,8 +217,8 @@ paths:
     /v1/servers:
         get:
             tags:
-                - ServerService
-            operationId: ServerService_ListServer
+                - Server
+            operationId: Server_ListServer
             parameters:
                 - name: ownerId
                   in: query
@@ -215,8 +233,8 @@ paths:
                                 $ref: '#/components/schemas/api.server.v1.ListServerReply'
         post:
             tags:
-                - ServerService
-            operationId: ServerService_CreateServer
+                - Server
+            operationId: Server_CreateServer
             requestBody:
                 content:
                     application/json:
@@ -233,8 +251,8 @@ paths:
     /v1/servers/{id}:
         get:
             tags:
-                - ServerService
-            operationId: ServerService_GetServer
+                - Server
+            operationId: Server_GetServer
             parameters:
                 - name: id
                   in: path
@@ -250,8 +268,8 @@ paths:
                                 $ref: '#/components/schemas/api.server.v1.GetServerReply'
         post:
             tags:
-                - ServerService
-            operationId: ServerService_UpdateServer
+                - Server
+            operationId: Server_UpdateServer
             parameters:
                 - name: id
                   in: path
@@ -273,8 +291,8 @@ paths:
                                 $ref: '#/components/schemas/api.server.v1.UpdateServerReply'
         delete:
             tags:
-                - ServerService
-            operationId: ServerService_DeleteServer
+                - Server
+            operationId: Server_DeleteServer
             parameters:
                 - name: id
                   in: path
@@ -306,11 +324,65 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/user.v1.NewUserReply'
-    /v1/users/{id}:
+    /v1/users/batch/gid:
+        post:
+            tags:
+                - User
+            operationId: User_BatchGetUserByGameId
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.BatchGetUserByGameIdRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.BatchGetUserByGameIdReply'
+    /v1/users/batch/id:
+        post:
+            tags:
+                - User
+            operationId: User_BatchGetUserById
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.BatchGetUserByIdRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.BatchGetUserByIdReply'
+    /v1/users/gid/{gameId}:
         get:
             tags:
                 - User
-            operationId: User_GetUser
+            operationId: User_GetUserByGameId
+            parameters:
+                - name: gameId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.GetUserByGameIdReply'
+    /v1/users/id/{id}:
+        get:
+            tags:
+                - User
+            operationId: User_GetUserById
             parameters:
                 - name: id
                   in: path
@@ -323,7 +395,43 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/user.v1.GetUserReply'
+                                $ref: '#/components/schemas/user.v1.GetUserByIdReply'
+    /v1/users/update:
+        put:
+            tags:
+                - User
+            operationId: User_UpdateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.UpdateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.UpdateUserReply'
+    /v1/users/{id}:
+        delete:
+            tags:
+                - User
+            operationId: User_DeleteUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.DeleteUserReply'
 components:
     schemas:
         api.server.v1.CreateServerReply:
@@ -356,15 +464,15 @@ components:
             type: object
             properties:
                 server:
-                    $ref: '#/components/schemas/api.server.v1.Server'
+                    $ref: '#/components/schemas/api.server.v1.ServerInfo'
         api.server.v1.ListServerReply:
             type: object
             properties:
                 servers:
                     type: array
                     items:
-                        $ref: '#/components/schemas/api.server.v1.Server'
-        api.server.v1.Server:
+                        $ref: '#/components/schemas/api.server.v1.ServerInfo'
+        api.server.v1.ServerInfo:
             type: object
             properties:
                 id:
@@ -524,22 +632,58 @@ components:
                 content:
                     type: string
             description: UpdateArticle 相关消息
-        user.v1.GetUserReply:
+        user.v1.BatchGetUserByGameIdReply:
             type: object
             properties:
-                id:
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/user.v1.UserInfo'
+        user.v1.BatchGetUserByGameIdRequest:
+            type: object
+            properties:
+                gids:
+                    type: array
+                    items:
+                        type: string
+        user.v1.BatchGetUserByIdReply:
+            type: object
+            properties:
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/user.v1.UserInfo'
+        user.v1.BatchGetUserByIdRequest:
+            type: object
+            properties:
+                ids:
+                    type: array
+                    items:
+                        type: string
+        user.v1.DeleteUserReply:
+            type: object
+            properties:
+                message:
                     type: string
-                name:
-                    type: string
+        user.v1.GetUserByGameIdReply:
+            type: object
+            properties:
+                user:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/user.v1.UserInfo'
+        user.v1.GetUserByIdReply:
+            type: object
+            properties:
+                user:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/user.v1.UserInfo'
         user.v1.LoginReply:
             type: object
             properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                email:
-                    type: string
+                user:
+                    $ref: '#/components/schemas/user.v1.UserInfo'
                 token:
                     type: string
         user.v1.LoginRequest:
@@ -549,15 +693,23 @@ components:
                     type: string
                 password:
                     type: string
-        user.v1.NewUserReply:
+        user.v1.LogoutReply:
+            type: object
+            properties:
+                message:
+                    type: string
+        user.v1.LogoutRequest:
             type: object
             properties:
                 id:
                     type: string
-                name:
+                token:
                     type: string
-                email:
-                    type: string
+        user.v1.NewUserReply:
+            type: object
+            properties:
+                newUser:
+                    $ref: '#/components/schemas/user.v1.UserInfo'
         user.v1.NewUserRequest:
             type: object
             properties:
@@ -570,12 +722,8 @@ components:
         user.v1.RegisterReply:
             type: object
             properties:
-                id:
-                    type: string
-                name:
-                    type: string
-                email:
-                    type: string
+                newUser:
+                    $ref: '#/components/schemas/user.v1.UserInfo'
         user.v1.RegisterRequest:
             type: object
             properties:
@@ -585,7 +733,33 @@ components:
                     type: string
                 password:
                     type: string
+        user.v1.UpdateUserReply:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/user.v1.UserInfo'
+                success:
+                    type: string
+        user.v1.UpdateUserRequest:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/user.v1.UserInfo'
+        user.v1.UserInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                gid:
+                    type: string
+                email:
+                    type: string
+                role:
+                    type: integer
+                    format: int32
 tags:
     - name: Article
-    - name: ServerService
+    - name: Server
     - name: User

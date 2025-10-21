@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "parallelfun-api/api;api";
+option java_multiple_files = true;
+option java_package = "api";
+
+
+message PageInfo {
+  int32 pageNum = 1;
+  int32 pageSize = 2;
+}
+
+message PageInfoReply{
+  int64 total=1;
+  int32 pageNum=2;
+  int32 pageSize=3;
+  int32 totalPages=4;
+}

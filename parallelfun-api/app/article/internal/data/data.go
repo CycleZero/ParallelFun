@@ -20,7 +20,7 @@ import (
 var ProviderSet = wire.NewSet(NewData,
 	NewArticleRepo,
 	NewUserClient,
-	NewMinioCLient,
+	NewMinioClient,
 )
 
 // Data .
@@ -47,7 +47,7 @@ func NewData(c *conf.Data, logger log.Logger, ucli userv1.UserClient, minioClien
 	return &Data{db: db, ucli: ucli, minioClient: minioClient}, cleanup, nil
 }
 
-func NewMinioCLient(c *conf.Data) *minio.Client {
+func NewMinioClient(c *conf.Data) *minio.Client {
 	minioClient, err := minio.New(c.Minio.Endpoint, &minio.Options{
 		Creds:  credentials.NewStaticV4(c.Minio.AccessKeyID, c.Minio.SecretAccessKey, ""),
 		Secure: c.Minio.UseSsl,

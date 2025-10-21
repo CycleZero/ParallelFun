@@ -1,15 +1,15 @@
 package service
 
 import (
-	"context"
+	//"context"
 
-	v1 "parallelfun-api/app/mcserver/api/helloworld/v1"
+	v1 "parallelfun-api/api/social/v1"
 	"parallelfun-api/app/social/internal/biz"
 )
 
 // GreeterService is a greeter service.
 type GreeterService struct {
-	v1.UnimplementedGreeterServer
+	v1.UnimplementedSocialServer
 
 	uc *biz.GreeterUsecase
 }
@@ -20,10 +20,3 @@ func NewGreeterService(uc *biz.GreeterUsecase) *GreeterService {
 }
 
 // SayHello implements helloworld.GreeterServer.
-func (s *GreeterService) SayHello(ctx context.Context, in *v1.HelloRequest) (*v1.HelloReply, error) {
-	g, err := s.uc.CreateGreeter(ctx, &biz.Greeter{Hello: in.Name})
-	if err != nil {
-		return nil, err
-	}
-	return &v1.HelloReply{Message: "Hello " + g.Hello}, nil
-}

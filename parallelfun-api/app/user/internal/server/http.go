@@ -20,7 +20,7 @@ func NewHTTPServer(c *conf.Server, user *service.UserService, logger log.Logger)
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
 	}
-	if c.Http.Addr != "" {
+	if c.Http.Addr != "" && c.RandomPort != true {
 		opts = append(opts, http.Address(c.Http.Addr))
 	}
 	if c.Http.Timeout != nil {

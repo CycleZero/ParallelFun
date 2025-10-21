@@ -22,7 +22,7 @@ func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
-	dsn := "host=server.poyuan233.cn port=35432 user=root password=poyuan666 dbname=parallelfun port=35432 sslmode=disable TimeZone=Asia/Shanghai"
+	dsn := c.Database.Dsn
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")

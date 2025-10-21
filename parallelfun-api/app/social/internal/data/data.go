@@ -1,7 +1,7 @@
 package data
 
 import (
-	"parallelfun-api/app/social/internal/conf"
+	"parallelfun-api/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"

@@ -4,19 +4,20 @@ package api.server.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "api/pageparam.proto";
 
 option go_package = "parallelfun-api/api/server/v1;v1";
 option java_multiple_files = true;
 option java_package = "api.server.v1";
 
-service ServerService {
+service Server {
 	rpc CreateServer (CreateServerRequest) returns (CreateServerReply) {
 		option (google.api.http) = {
 			post: "/v1/servers"
 			body: "*"
 		};
 	}
-
+	
 	rpc UpdateServer (UpdateServerRequest) returns (UpdateServerReply) {
 		option (google.api.http) = {
 			post: "/v1/servers/{id}"
@@ -30,21 +31,46 @@ service ServerService {
 		};
 	}
 
-	rpc GetServer (GetServerRequest) returns (GetServerReply) {
+	rpc GetServerById (GetServerByIdRequest) returns (GetServerByIdReply) {
 		option (google.api.http) = {
 			get: "/v1/servers/{id}"
 		};
 	}
 
-	rpc ListServer (ListServerRequest) returns (ListServerReply) {
+	rpc ListServer (ListServerByOwnerIdRequest) returns (ListServerByOwnerIdReply) {
 		option (google.api.http) = {
 			get: "/v1/servers"
 		};
 	}
+	//GamePlayerInfo
+	rpc GetServerOnlinePlayer(GetServerOnlinePlayerRequest) returns(GetServerOnlinePlayerReply){
+		option (google.api.http) = {
+			get: "/v1/servers/players"
+		};
+	}
+
+	rpc AddServerOnlinePlayer(AddServerOnlinePlayerRequest) returns (AddServerOnlinePlayerReply){
+		option (google.api.http) = {
+			post: "/v1/servers/players/join"
+			body: "*"
+		};
+	}
+	rpc RemoveServerOnlinePlayer(RemoveServerOnlinePlayerRequest) returns (RemoveServerOnlinePlayerReply){
+		option (google.api.http) = {
+			post: "/v1/servers/players/leave"
+			body: "*"
+		};
+	}
+	rpc GetServerOnlinePlayerCount(GetServerOnlinePlayerCountRequest) returns (GetServerOnlinePlayerCountReply){
+		option (google.api.http) = {
+			get: "/v1/servers/players/count"
+		};
+	}
+
 }
 
 
-message Server {
+message ServerInfo {
 	uint64 id = 1;
 	string name = 2;
 	string address = 3;
@@ -54,6 +80,11 @@ message Server {
 	google.protobuf.Timestamp created_at = 7;
 	google.protobuf.Timestamp updated_at = 8;
 	google.protobuf.Timestamp deleted_at = 9;
+
+	string Avatar = 10;
+	string Description = 11;
+	string Cover = 12;
+	repeated string tags = 13;
 }
 
 message CreateServerRequest {
@@ -63,24 +94,16 @@ message CreateServerRequest {
 	uint32 port = 4;
 }
 message CreateServerReply {
-	uint64 id = 1;
-	string name = 2;
-	uint64 owner_id = 3;
+	ServerInfo serverInfo= 1;
 }
 
 message UpdateServerRequest {
 	uint64 id = 1;
-	string name = 2;
-	string address = 3;
-	uint32 port = 4;
-	int32 status = 5;
+	ServerInfo serverInfo = 2;
 }
 message UpdateServerReply {
 	uint64 id = 1;
-	string name = 2;
-	string address = 3;
-	uint32 port = 4;
-	int32 status = 5;
+	ServerInfo serverInfo = 2;
 }
 
 message DeleteServerRequest {
@@ -90,16 +113,52 @@ message DeleteServerReply {
 	bool success = 1;
 }
 
-message GetServerRequest {
+message GetServerByIdRequest {
 	uint64 id = 1;
 }
-message GetServerReply {
-	Server server = 1;
+message GetServerByIdReply {
+	ServerInfo server = 1;
 }
 
-message ListServerRequest {
+message ListServerByOwnerIdRequest {
 	uint64 owner_id = 1;
+	PageInfo pageInfo = 2;
 }
-message ListServerReply {
-	repeated Server servers = 1;
+message ListServerByOwnerIdReply {
+	PageInfoReply pageInfo = 2;
+	repeated ServerInfo servers = 1;
+}
+
+message ServerPlayerInfo{
+	uint64 id = 1;
+	string name = 2;
+	string avatar = 3;
+	string description = 4;
+	string cover = 5;
+	uint64 server_id = 6;
+}
+message GetServerOnlinePlayerRequest{
+	uint64 server_id = 1;
+}
+message GetServerOnlinePlayerReply{
+	repeated ServerPlayerInfo players = 1;
+}
+
+message AddServerOnlinePlayerRequest{
+
+}
+message AddServerOnlinePlayerReply{
+
+}
+message RemoveServerOnlinePlayerRequest{
+
+}
+message RemoveServerOnlinePlayerReply{
+
+}
+message GetServerOnlinePlayerCountRequest{
+	uint64 server_id = 1;
+}
+message GetServerOnlinePlayerCountReply{
+	uint64 count = 1;
 }

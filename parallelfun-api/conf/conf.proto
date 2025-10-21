@@ -24,6 +24,7 @@ message Server {
   }
   HTTP http = 1;
   GRPC grpc = 2;
+  bool random_port=3;
 }
 
 message Data {

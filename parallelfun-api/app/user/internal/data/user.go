@@ -12,6 +12,34 @@ type userRepo struct {
 	log *log.Helper
 }
 
+func (r *userRepo) FindByEmail(ctx context.Context, email string) (*biz.User, error) {
+	var u *biz.User
+	result := r.data.db.Where("email=?", email).First(&u)
+	return u, result.Error
+}
+
+func (r *userRepo) BatchFindById(ctx context.Context, ids []uint) ([]*biz.User, error) {
+	var us []*biz.User
+	err := r.data.db.Where("id IN (?)", ids).Find(&us).Error
+	return us, err
+}
+
+func (r *userRepo) GetUserByGameId(ctx context.Context, gameId string) (*biz.User, error) {
+	var u *biz.User
+	err := r.data.db.Where("game_id=?", gameId).First(u).Error
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
+func (r *userRepo) BatchGetUserByGameId(ctx context.Context, gameIds []string) ([]*biz.User, error) {
+	var us []*biz.User
+	err := r.data.db.Where("game_id IN (?)", gameIds).Find(&us).Error
+
+	return us, err
+}
+
 func (r *userRepo) GetRole(ctx context.Context, id uint) (biz.Role, error) {
 	var role biz.Role
 	err := r.data.db.Where("id=?", id).Select("role").First(&role).Error

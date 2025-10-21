@@ -7,15 +7,42 @@ import "google/api/annotations.proto";
 option go_package = "parallelfun-api/api/user/v1;v1";
 
 service User {
-  rpc GetUser (GetUserRequest) returns (GetUserReply) {
+  rpc GetUserById (GetUserByIdRequest) returns (GetUserByIdReply) {
     option (google.api.http) = {
-      get: "/v1/users/{id}"
+      get: "/v1/users/id/{id}"
     };
   }
 
   rpc NewUser (NewUserRequest) returns (NewUserReply) {
     option (google.api.http) = {
       post: "/v1/users"
+      body: "*"
+    };
+  }
+
+  rpc GetUserByGameId (GetUserByGameIdRequest) returns (GetUserByGameIdReply) {
+    option (google.api.http) = {
+      get: "/v1/users/gid/{game_id}"
+    };
+  }
+
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserReply) {
+    option (google.api.http) = {
+      put: "/v1/users/update"
+      body: "*"
+    };
+  }
+
+  rpc BatchGetUserByGameId (BatchGetUserByGameIdRequest) returns (BatchGetUserByGameIdReply) {
+    option (google.api.http) = {
+      post: "/v1/users/batch/gid"
+      body: "*"
+    };
+  }
+
+  rpc BatchGetUserById (BatchGetUserByIdRequest) returns (BatchGetUserByIdReply) {
+    option (google.api.http) = {
+      post: "/v1/users/batch/id"
       body: "*"
     };
   }
@@ -33,14 +60,36 @@ service User {
       body: "*"
     };
   }
+
+  rpc Logout (LogoutRequest) returns (LogoutReply) {
+    option (google.api.http) = {
+      post: "/v1/logout"
+      body: "*"
+    };
+  }
+
+
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply) {
+    option (google.api.http) = {
+      delete: "/v1/users/{id}"
+    };
+  }
+
 }
 
-message GetUserRequest {
-  uint64 id = 1;
-}
-message GetUserReply {
+message UserInfo{
   uint64 id = 1;
   string name = 2;
+  string gid= 3;
+  string email= 4;
+  int32 role=5;
+}
+
+message GetUserByIdRequest {
+  uint64 id = 1;
+}
+message GetUserByIdReply {
+  repeated UserInfo user= 1;
 }
 
 message NewUserRequest{
@@ -50,9 +99,32 @@ message NewUserRequest{
 }
 
 message NewUserReply{
-  uint64 id = 1;
-  string name = 2;
-  string email = 3;
+  UserInfo newUser= 1;
+}
+
+
+message GetUserByGameIdRequest {
+  string game_id = 1;
+}
+
+message GetUserByGameIdReply{
+  repeated UserInfo user= 1;
+}
+
+message BatchGetUserByGameIdRequest {
+  repeated string gids = 1;
+}
+
+message BatchGetUserByGameIdReply {
+  repeated UserInfo users = 1;
+}
+
+message BatchGetUserByIdRequest {
+  repeated uint64 ids = 1;
+}
+
+message BatchGetUserByIdReply {
+  repeated UserInfo users = 1;
 }
 
 message RegisterRequest{
@@ -62,9 +134,7 @@ message RegisterRequest{
 }
 
 message RegisterReply{
-  uint64 id = 1;
-  string name = 2;
-  string email = 3;
+  UserInfo newUser= 1;
 }
 
 message LoginRequest{
@@ -73,8 +143,29 @@ message LoginRequest{
 }
 
 message LoginReply{
-  uint64 id = 1;
-  string name = 2;
-  string email = 3;
-  string token = 4;
+  UserInfo user= 1;
+  string token = 2;
 }
+
+
+message LogoutRequest{
+  string id = 1;
+  string token = 2;
+}
+message LogoutReply{
+  string message = 1;
+}
+message UpdateUserRequest{
+  UserInfo user= 1;
+}
+message UpdateUserReply{
+  UserInfo user= 1;
+  string success = 2;
+}
+message DeleteUserRequest{
+  uint64 id = 1;
+}
+message DeleteUserReply{
+  string message = 1;
+}
+

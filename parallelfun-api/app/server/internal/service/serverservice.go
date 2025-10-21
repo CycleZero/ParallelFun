@@ -7,28 +7,28 @@ import (
 	pb "parallelfun-api/api/server/v1"
 )
 
-type ServerServiceService struct {
-	pb.UnimplementedServerServiceServer
+type ServerService struct {
+	pb.UnimplementedServerServer
 
 	uc *biz.ServerUsecase
 }
 
-func NewServerServiceService(uc *biz.ServerUsecase) *ServerServiceService {
-	return &ServerServiceService{uc: uc}
+func NewServerService(uc *biz.ServerUsecase) *ServerService {
+	return &ServerService{uc: uc}
 }
 
-func (s *ServerServiceService) CreateServer(ctx context.Context, req *pb.CreateServerRequest) (*pb.CreateServerReply, error) {
+func (s *ServerService) CreateServer(ctx context.Context, req *pb.CreateServerRequest) (*pb.CreateServerReply, error) {
 	return &pb.CreateServerReply{}, nil
 }
-func (s *ServerServiceService) UpdateServer(ctx context.Context, req *pb.UpdateServerRequest) (*pb.UpdateServerReply, error) {
+func (s *ServerService) UpdateServer(ctx context.Context, req *pb.UpdateServerRequest) (*pb.UpdateServerReply, error) {
 	return &pb.UpdateServerReply{}, nil
 }
-func (s *ServerServiceService) DeleteServer(ctx context.Context, req *pb.DeleteServerRequest) (*pb.DeleteServerReply, error) {
+func (s *ServerService) DeleteServer(ctx context.Context, req *pb.DeleteServerRequest) (*pb.DeleteServerReply, error) {
 	return &pb.DeleteServerReply{}, nil
 }
-func (s *ServerServiceService) GetServer(ctx context.Context, req *pb.GetServerRequest) (*pb.GetServerReply, error) {
+func (s *ServerService) GetServer(ctx context.Context, req *pb.GetServerRequest) (*pb.GetServerReply, error) {
 	return &pb.GetServerReply{}, nil
 }
-func (s *ServerServiceService) ListServer(ctx context.Context, req *pb.ListServerRequest) (*pb.ListServerReply, error) {
+func (s *ServerService) ListServer(ctx context.Context, req *pb.ListServerRequest) (*pb.ListServerReply, error) {
 	return &pb.ListServerReply{}, nil
 }
