@@ -224,13 +224,23 @@ paths:
                   in: query
                   schema:
                     type: string
+                - name: pageInfo.pageNum
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageInfo.pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
             responses:
                 "200":
                     description: OK
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.server.v1.ListServerReply'
+                                $ref: '#/components/schemas/api.server.v1.ListServerByOwnerIdReply'
         post:
             tags:
                 - Server
@@ -248,11 +258,64 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.server.v1.CreateServerReply'
+    /v1/servers/players/count:
+        get:
+            tags:
+                - Server
+            operationId: Server_GetServerOnlinePlayerCount
+            parameters:
+                - name: serverId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.GetServerOnlinePlayerCountReply'
+    /v1/servers/players/join:
+        post:
+            tags:
+                - Server
+            operationId: Server_AddServerOnlinePlayer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.server.v1.AddServerOnlinePlayerRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.AddServerOnlinePlayerReply'
+    /v1/servers/players/leave:
+        post:
+            tags:
+                - Server
+            operationId: Server_RemoveServerOnlinePlayer
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.server.v1.RemoveServerOnlinePlayerRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.RemoveServerOnlinePlayerReply'
     /v1/servers/{id}:
         get:
             tags:
                 - Server
-            operationId: Server_GetServer
+            operationId: Server_GetServerById
             parameters:
                 - name: id
                   in: path
@@ -265,7 +328,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/api.server.v1.GetServerReply'
+                                $ref: '#/components/schemas/api.server.v1.GetServerByIdReply'
         post:
             tags:
                 - Server
@@ -306,6 +369,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/api.server.v1.DeleteServerReply'
+    /v1/servers/{serverId}/players:
+        get:
+            tags:
+                - Server
+            description: GamePlayerInfo
+            operationId: Server_GetServerOnlinePlayer
+            parameters:
+                - name: serverId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.server.v1.GetServerOnlinePlayerReply'
     /v1/users:
         post:
             tags:
@@ -434,15 +516,35 @@ paths:
                                 $ref: '#/components/schemas/user.v1.DeleteUserReply'
 components:
     schemas:
-        api.server.v1.CreateServerReply:
+        api.PageInfoReply:
+            type: object
+            properties:
+                total:
+                    type: string
+                pageNum:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+                totalPages:
+                    type: integer
+                    format: int32
+        api.server.v1.AddServerOnlinePlayerReply:
             type: object
             properties:
                 id:
                     type: string
-                name:
+        api.server.v1.AddServerOnlinePlayerRequest:
+            type: object
+            properties:
+                id:
                     type: string
-                ownerId:
-                    type: string
+        api.server.v1.CreateServerReply:
+            type: object
+            properties:
+                serverInfo:
+                    $ref: '#/components/schemas/api.server.v1.ServerInfo'
         api.server.v1.CreateServerRequest:
             type: object
             properties:
@@ -460,18 +562,44 @@ components:
             properties:
                 success:
                     type: boolean
-        api.server.v1.GetServerReply:
+        api.server.v1.GetServerByIdReply:
             type: object
             properties:
                 server:
                     $ref: '#/components/schemas/api.server.v1.ServerInfo'
-        api.server.v1.ListServerReply:
+        api.server.v1.GetServerOnlinePlayerCountReply:
             type: object
             properties:
+                count:
+                    type: string
+        api.server.v1.GetServerOnlinePlayerReply:
+            type: object
+            properties:
+                players:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.server.v1.ServerPlayerInfo'
+        api.server.v1.ListServerByOwnerIdReply:
+            type: object
+            properties:
+                pageInfo:
+                    $ref: '#/components/schemas/api.PageInfoReply'
                 servers:
                     type: array
                     items:
                         $ref: '#/components/schemas/api.server.v1.ServerInfo'
+                owner:
+                    $ref: '#/components/schemas/user.v1.UserInfo'
+        api.server.v1.RemoveServerOnlinePlayerReply:
+            type: object
+            properties:
+                id:
+                    type: string
+        api.server.v1.RemoveServerOnlinePlayerRequest:
+            type: object
+            properties:
+                id:
+                    type: string
         api.server.v1.ServerInfo:
             type: object
             properties:
@@ -498,36 +626,45 @@ components:
                 deletedAt:
                     type: string
                     format: date-time
+                Avatar:
+                    type: string
+                Description:
+                    type: string
+                Cover:
+                    type: string
+                tags:
+                    type: array
+                    items:
+                        type: string
+        api.server.v1.ServerPlayerInfo:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                avatar:
+                    type: string
+                description:
+                    type: string
+                cover:
+                    type: string
+                serverId:
+                    type: string
         api.server.v1.UpdateServerReply:
             type: object
             properties:
                 id:
                     type: string
-                name:
-                    type: string
-                address:
-                    type: string
-                port:
-                    type: integer
-                    format: uint32
-                status:
-                    type: integer
-                    format: int32
+                serverInfo:
+                    $ref: '#/components/schemas/api.server.v1.ServerInfo'
         api.server.v1.UpdateServerRequest:
             type: object
             properties:
                 id:
                     type: string
-                name:
-                    type: string
-                address:
-                    type: string
-                port:
-                    type: integer
-                    format: uint32
-                status:
-                    type: integer
-                    format: int32
+                serverInfo:
+                    $ref: '#/components/schemas/api.server.v1.ServerInfo'
         article.v1.ArticleInfo:
             type: object
             properties:

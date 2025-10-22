@@ -13,7 +13,7 @@ func Test_msmp(t *testing.T) {
 	url := "ws://msmp.server.poyuan233.cn:8088"
 	secret := "MjHrY9yN3WTUKXsgtB1bMxTtvWlnJwVAVEbLFT2z"
 	clientConfig := mcmsmpgo.NewClientConfig{}
-	sync.Once.Do()
+
 	cli := mcmsmpgo.NewMsmpClient(url, secret, nil)
 	err := cli.Connect()
 	if err != nil {

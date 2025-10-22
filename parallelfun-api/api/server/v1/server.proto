@@ -4,7 +4,8 @@ package api.server.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
-import "api/pageparam.proto";
+import "pageparam.proto";
+import "user/v1/user.proto";
 
 option go_package = "parallelfun-api/api/server/v1;v1";
 option java_multiple_files = true;
@@ -17,7 +18,7 @@ service Server {
 			body: "*"
 		};
 	}
-	
+
 	rpc UpdateServer (UpdateServerRequest) returns (UpdateServerReply) {
 		option (google.api.http) = {
 			post: "/v1/servers/{id}"
@@ -45,7 +46,7 @@ service Server {
 	//GamePlayerInfo
 	rpc GetServerOnlinePlayer(GetServerOnlinePlayerRequest) returns(GetServerOnlinePlayerReply){
 		option (google.api.http) = {
-			get: "/v1/servers/players"
+			get: "/v1/servers/{serverId}/players"
 		};
 	}
 
@@ -76,10 +77,10 @@ message ServerInfo {
 	string address = 3;
 	uint32 port = 4;
 	int32 status = 5;
-	uint64 owner_id = 6;
+	uint64 ownerId = 6;
 	google.protobuf.Timestamp created_at = 7;
 	google.protobuf.Timestamp updated_at = 8;
-	google.protobuf.Timestamp deleted_at = 9;
+	optional google.protobuf.Timestamp deleted_at = 9;
 
 	string Avatar = 10;
 	string Description = 11;
@@ -121,12 +122,14 @@ message GetServerByIdReply {
 }
 
 message ListServerByOwnerIdRequest {
-	uint64 owner_id = 1;
+	uint64 ownerId = 1;
 	PageInfo pageInfo = 2;
 }
 message ListServerByOwnerIdReply {
 	PageInfoReply pageInfo = 2;
+
 	repeated ServerInfo servers = 1;
+	user.v1.UserInfo owner = 3;
 }
 
 message ServerPlayerInfo{
@@ -135,29 +138,29 @@ message ServerPlayerInfo{
 	string avatar = 3;
 	string description = 4;
 	string cover = 5;
-	uint64 server_id = 6;
+	uint64 serverId = 6;
 }
 message GetServerOnlinePlayerRequest{
-	uint64 server_id = 1;
+	string serverId = 1;
 }
 message GetServerOnlinePlayerReply{
 	repeated ServerPlayerInfo players = 1;
 }
 
 message AddServerOnlinePlayerRequest{
-
+	string id = 1;
 }
 message AddServerOnlinePlayerReply{
-
+	string id = 1;
 }
 message RemoveServerOnlinePlayerRequest{
-
+	string id = 1;
 }
 message RemoveServerOnlinePlayerReply{
-
+	string id = 1;
 }
 message GetServerOnlinePlayerCountRequest{
-	uint64 server_id = 1;
+	uint64 serverId = 1;
 }
 message GetServerOnlinePlayerCountReply{
 	uint64 count = 1;

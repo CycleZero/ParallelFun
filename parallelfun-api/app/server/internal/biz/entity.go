@@ -15,7 +15,7 @@ type Server struct {
 	Avatar      string
 	Cover       string
 	Description string
-	Tags        []string
+	Tags        []string `gorm:"-"`
 }
 
 type User struct {

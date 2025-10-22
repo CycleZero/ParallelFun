@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"github.com/go-kratos/kratos/v2/registry"
 	"os"
 
 	"parallelfun-api/conf"
@@ -21,23 +20,20 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
-	Name string = "parallelfun.service.server"
+	Name string
 	// Version is the version of the compiled software.
 	Version string
 	// flagconf is the config flag.
 	flagconf string
 
 	id, _ = os.Hostname()
-
-	ConfPath       = "./configs/server"
-	CommonConfPath = "./configs/common"
 )
 
 func init() {
 	flag.StringVar(&flagconf, "conf", "./configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, rr registry.Registrar) *kratos.App {
+func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -48,7 +44,6 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server, rr registry.Reg
 			gs,
 			hs,
 		),
-		kratos.Registrar(rr),
 	)
 }
 
@@ -65,8 +60,7 @@ func main() {
 	)
 	c := config.New(
 		config.WithSource(
-			file.NewSource(ConfPath),
-			file.NewSource(CommonConfPath),
+			file.NewSource(flagconf),
 		),
 	)
 	defer c.Close()
@@ -80,7 +74,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Registry, logger)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, logger)
 	if err != nil {
 		panic(err)
 	}

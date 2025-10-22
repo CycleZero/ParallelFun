@@ -29,6 +29,9 @@ var (
 	flagconf string
 
 	id, _ = os.Hostname()
+
+	CommonConfPath = "./configs/common"
+	ConfPath       = "./configs/user"
 )
 
 func init() {
@@ -64,7 +67,8 @@ func main() {
 	)
 	c := config.New(
 		config.WithSource(
-			file.NewSource(flagconf),
+			file.NewSource(ConfPath),
+			file.NewSource(CommonConfPath),
 		),
 	)
 	defer c.Close()

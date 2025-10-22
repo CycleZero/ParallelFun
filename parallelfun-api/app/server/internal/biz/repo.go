@@ -19,3 +19,6 @@ type UserRepo interface {
 	BatchFindByGameId(context.Context, []string) ([]*User, error)
 	BatchFindById(context.Context, []uint) ([]*User, error)
 }
+
+type ServerApi interface {
+}

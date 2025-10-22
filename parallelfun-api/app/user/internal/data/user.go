@@ -13,19 +13,19 @@ type userRepo struct {
 }
 
 func (r *userRepo) FindByEmail(ctx context.Context, email string) (*biz.User, error) {
-	var u *biz.User
+	u := &biz.User{}
 	result := r.data.db.Where("email=?", email).First(&u)
 	return u, result.Error
 }
 
 func (r *userRepo) BatchFindById(ctx context.Context, ids []uint) ([]*biz.User, error) {
-	var us []*biz.User
+	us := make([]*biz.User, 0, len(ids))
 	err := r.data.db.Where("id IN (?)", ids).Find(&us).Error
 	return us, err
 }
 
 func (r *userRepo) GetUserByGameId(ctx context.Context, gameId string) (*biz.User, error) {
-	var u *biz.User
+	u := &biz.User{}
 	err := r.data.db.Where("game_id=?", gameId).First(u).Error
 	if err != nil {
 		return nil, err
@@ -34,7 +34,7 @@ func (r *userRepo) GetUserByGameId(ctx context.Context, gameId string) (*biz.Use
 }
 
 func (r *userRepo) BatchGetUserByGameId(ctx context.Context, gameIds []string) ([]*biz.User, error) {
-	var us []*biz.User
+	var us = make([]*biz.User, 0, len(gameIds))
 	err := r.data.db.Where("game_id IN (?)", gameIds).Find(&us).Error
 
 	return us, err
@@ -57,13 +57,13 @@ func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 }
 
 func (r *userRepo) FindByID(ctx context.Context, id uint) (*biz.User, error) {
-	var u *biz.User
+	u := &biz.User{}
 	r.data.db.Where("id=?", id).First(u)
 	return u, nil
 }
 
 func (r *userRepo) ListAll(ctx context.Context) ([]*biz.User, error) {
-	var u []*biz.User
+	var u = make([]*biz.User, 10)
 	r.data.db.Find(&u)
 
 	return u, nil
@@ -91,7 +91,7 @@ func (r *userRepo) ListByName(ctx context.Context, name string) ([]*biz.User, er
 }
 
 func (r *userRepo) FindByName(ctx context.Context, name string) (*biz.User, error) {
-	var u *biz.User
+	var u = &biz.User{}
 	result := r.data.db.Where("name=?", name).First(&u)
 	return u, result.Error
 }

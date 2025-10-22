@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package api.server.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "pageparam.proto";
+import "user/v1/user.proto";
+
+option go_package = "parallelfun-api/api/clienthub/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.clienthub.v1";
+
+
+service ClientHub{
+  rpc SendRpcCommand (SendRpcCommandRequest) returns(SendRpcCommandReply);
+}
+message SendRpcCommandRequest{
+  string clientId = 1;
+  string targetInstanceId = 2;
+  string command = 3;
+  string params = 4;
+}
+
+message SendRpcCommandReply{
+  string message = 1;
+}
+
+

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/gorm"
 
 	pb "parallelfun-api/api/user/v1"
@@ -22,7 +23,7 @@ func NewUserService(uc *biz.UserUseCase) *UserService {
 
 func (s *UserService) GetUserById(ctx context.Context, req *pb.GetUserByIdRequest) (*pb.GetUserByIdReply, error) {
 	user, err := s.uc.GetUser(ctx, uint(req.Id))
-	if err != nil {
+	if err != nil || user == nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return &pb.GetUserByIdReply{}, nil
 		}
@@ -31,7 +32,7 @@ func (s *UserService) GetUserById(ctx context.Context, req *pb.GetUserByIdReques
 
 	return &pb.GetUserByIdReply{
 		User: []*pb.UserInfo{
-			&pb.UserInfo{
+			{
 				Id:    uint64(user.ID),
 				Name:  user.Name,
 				Gid:   user.GameId,
@@ -51,9 +52,10 @@ func (s *UserService) NewUser(ctx context.Context, req *pb.NewUserRequest) (*pb.
 
 	createdUser, err := s.uc.CreateUser(ctx, user)
 	if err != nil {
+		log.Error(ctx, err, "failed to create user")
 		return nil, err
 	}
-
+	log.Info(ctx, "created user", "user", createdUser)
 	return &pb.NewUserReply{
 		NewUser: &pb.UserInfo{
 			Id:    uint64(createdUser.ID),
