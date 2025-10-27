@@ -6,9 +6,10 @@ import (
 
 type Article struct {
 	gorm.Model
-	Title    string
-	Content  string
-	AuthorID uint64
+	Title     string
+	Content   string
+	AuthorID  uint64
+	MediaInfo MediaInfo
 }
 
 type VideoPost struct {
@@ -17,6 +18,11 @@ type VideoPost struct {
 	Content   string
 	AuthorID  uint64
 	VideoLink string
+}
+
+type MediaInfo struct {
+	Type string
+	Link string
 }
 
 type Comment struct {

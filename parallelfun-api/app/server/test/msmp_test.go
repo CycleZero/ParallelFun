@@ -12,9 +12,9 @@ import (
 func Test_msmp(t *testing.T) {
 	url := "ws://msmp.server.poyuan233.cn:8088"
 	secret := "MjHrY9yN3WTUKXsgtB1bMxTtvWlnJwVAVEbLFT2z"
-	clientConfig := mcmsmpgo.NewClientConfig{}
+	clientConfig := &mcmsmpgo.NewClientConfig{}
 
-	cli := mcmsmpgo.NewMsmpClient(url, secret, nil)
+	cli := mcmsmpgo.NewMsmpClient(url, secret, clientConfig)
 	err := cli.Connect()
 	if err != nil {
 		log.Println(err)

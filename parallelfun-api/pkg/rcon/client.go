@@ -11,14 +11,14 @@ import (
 )
 
 const (
-	AUTH           = 3
-	AUTH_RESPONSE  = 2
-	EXEC_COMMAND   = 2
-	RESPONSE_VALUE = 0
+	AUTH          = 3
+	AuthResponse  = 2
+	ExecCommand   = 2
+	ResponseValue = 0
 )
 
-// Client RCON客户端结构
-type Client struct {
+// RconClient RCON客户端结构
+type RconClient struct {
 	conn      net.Conn
 	addr      string
 	password  string
@@ -27,8 +27,8 @@ type Client struct {
 }
 
 // NewClient 创建一个新的RCON客户端
-func NewClient(addr, password string) *Client {
-	return &Client{
+func NewRconClient(addr, password string) *RconClient {
+	return &RconClient{
 		addr:      addr,
 		password:  password,
 		requestID: 0,
@@ -36,7 +36,7 @@ func NewClient(addr, password string) *Client {
 }
 
 // Connect 连接到RCON服务器并进行身份验证
-func (c *Client) Connect() error {
+func (c *RconClient) Connect() error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -59,7 +59,7 @@ func (c *Client) Connect() error {
 }
 
 // Close 关闭RCON连接
-func (c *Client) Close() error {
+func (c *RconClient) Close() error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -72,7 +72,7 @@ func (c *Client) Close() error {
 }
 
 // authenticate 进行身份验证
-func (c *Client) authenticate() error {
+func (c *RconClient) authenticate() error {
 	// 发送认证请求
 	err := c.sendPacket(AUTH, c.password)
 	if err != nil {
@@ -90,7 +90,7 @@ func (c *Client) authenticate() error {
 		return fmt.Errorf("authentication failed: incorrect password")
 	}
 
-	if typ != AUTH_RESPONSE {
+	if typ != AuthResponse {
 		return fmt.Errorf("unexpected response type during authentication: %d", typ)
 	}
 
@@ -98,7 +98,7 @@ func (c *Client) authenticate() error {
 }
 
 // Execute 执行RCON命令
-func (c *Client) Execute(command string) (string, error) {
+func (c *RconClient) Execute(command string) (string, error) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -107,7 +107,7 @@ func (c *Client) Execute(command string) (string, error) {
 	}
 
 	// 发送命令
-	err := c.sendPacket(EXEC_COMMAND, command)
+	err := c.sendPacket(ExecCommand, command)
 	if err != nil {
 		return "", fmt.Errorf("failed to send command packet: %w", err)
 	}
@@ -126,7 +126,7 @@ func (c *Client) Execute(command string) (string, error) {
 		}
 
 		// 检查响应类型
-		if typ != RESPONSE_VALUE {
+		if typ != ResponseValue {
 			return "", fmt.Errorf("unexpected response type: %d", typ)
 		}
 
@@ -142,7 +142,7 @@ func (c *Client) Execute(command string) (string, error) {
 }
 
 // sendPacket 发送数据包
-func (c *Client) sendPacket(typ int32, body string) error {
+func (c *RconClient) sendPacket(typ int32, body string) error {
 	// 生成请求ID
 	c.requestID++
 	if c.requestID < 0 {
@@ -170,7 +170,7 @@ func (c *Client) sendPacket(typ int32, body string) error {
 }
 
 // readPacket 读取数据包
-func (c *Client) readPacket() (id, typ int32, body string, err error) {
+func (c *RconClient) readPacket() (id, typ int32, body string, err error) {
 	// 读取数据包长度
 	var length int32
 	err = binary.Read(c.conn, binary.LittleEndian, &length)
@@ -219,7 +219,7 @@ func (c *Client) readPacket() (id, typ int32, body string, err error) {
 }
 
 // SetTimeout 设置读写超时
-func (c *Client) SetTimeout(timeout time.Duration) error {
+func (c *RconClient) SetTimeout(timeout time.Duration) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 

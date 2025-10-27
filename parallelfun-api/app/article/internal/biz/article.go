@@ -3,15 +3,18 @@ package biz
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/minio/minio-go/v7"
+	"time"
 )
 
 type ArticleUsecase struct {
-	repo ArticleRepo
-	log  *log.Helper
+	repo        ArticleRepo
+	log         *log.Helper
+	minioClient *minio.Client
 }
 
-func NewArticleUsecase(repo ArticleRepo, logger log.Logger) *ArticleUsecase {
-	return &ArticleUsecase{repo: repo, log: log.NewHelper(logger)}
+func NewArticleUsecase(repo ArticleRepo, logger log.Logger, minioClient *minio.Client) *ArticleUsecase {
+	return &ArticleUsecase{repo: repo, log: log.NewHelper(logger), minioClient: minioClient}
 }
 
 func (uc *ArticleUsecase) GetArticleById(ctx context.Context, id uint64) (*Article, error) {
@@ -48,4 +51,12 @@ func (uc *ArticleUsecase) GetArticleListByPage(ctx context.Context, offset, limi
 
 func (uc *ArticleUsecase) GetAuthorById(ctx context.Context, id uint64) (*Author, error) {
 	return uc.repo.FindAuthorById(ctx, id)
+}
+
+func (uc *ArticleUsecase) GenerateUploadUrl(ctx context.Context, userId, fileName, fileType string) (string, error) {
+	url, err := uc.minioClient.PresignedPutObject(ctx, fileType, fileName, time.Minute*30)
+	if err != nil {
+		return "", err
+	}
+	return url.String(), nil
 }

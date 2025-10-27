@@ -14,7 +14,10 @@ option java_package = "api.clienthub.v1";
 
 service ClientHub{
   rpc SendRpcCommand (SendRpcCommandRequest) returns(SendRpcCommandReply);
+  rpc NewConnection (NewConnectionRequest) returns(NewConnectionReply);
+  rpc Disconnect(DisconnectRequest) returns(DisconnectReply);
 }
+
 message SendRpcCommandRequest{
   string clientId = 1;
   string targetInstanceId = 2;
@@ -25,5 +28,24 @@ message SendRpcCommandRequest{
 message SendRpcCommandReply{
   string message = 1;
 }
+
+message NewConnectionRequest{
+  string clientId = 1;
+  string instanceId = 2;
+  string userId = 3;
+  string url= 4;
+}
+
+message NewConnectionReply{
+  string message = 1;
+}
+message DisconnectRequest{
+  string clientId = 1;
+}
+message DisconnectReply{
+  string message = 1;
+}
+
+
 
 

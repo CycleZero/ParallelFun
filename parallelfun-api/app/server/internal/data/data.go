@@ -16,6 +16,7 @@ import (
 var ProviderSet = wire.NewSet(NewData,
 	NewServerRepo,
 	NewUserRepo,
+	NewServerApi,
 )
 
 // Data .

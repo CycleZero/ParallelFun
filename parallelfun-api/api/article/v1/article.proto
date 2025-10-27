@@ -44,6 +44,13 @@ service Article {
       get: "/v1/articles/title/{title}"
     };
   }
+
+  rpc UploadMedia(UploadMediaRequest) returns (UploadMediaReply) {
+    option (google.api.http) = {
+      post: "/v1/articles/media/upload"
+      body: "*"
+    };
+  }
 }
 
 message Author {
@@ -85,6 +92,7 @@ message GetArticleListReply {
 }
 
 // NewArticle 相关消息
+//TODO关联媒体信息
 message NewArticleRequest {
   string title = 1;
   string content = 2;
@@ -141,4 +149,15 @@ message GetArticleListByTitleReply {
   int32 total = 2;
   int32 page = 3;
   int32 page_size = 4;
+}
+
+message UploadMediaRequest {
+  string UserId = 1;
+  string FileName = 2;
+  string Type = 3;
+
+}
+
+message UploadMediaReply {
+  string url = 1;
 }

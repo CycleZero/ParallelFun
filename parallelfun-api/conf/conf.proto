@@ -45,11 +45,18 @@ message Data {
     string secretAccessKey=3;
     bool use_ssl = 4;
   }
+  message ElasticSearch{
+    string address = 1;
+    string username = 2;
+    string password = 3;
+    string authFingerPrint = 4;
+  }
   Database database = 1;
   Database readDB=2;
   Database writeDB=3;
   Redis redis = 4;
   MinIO minio = 5;
+  ElasticSearch elasticSearch=6;
 }
 
 message Registry {

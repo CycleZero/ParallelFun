@@ -2,7 +2,7 @@ package jwt
 
 import (
 	"github.com/golang-jwt/jwt/v4"
-	"parallelfun-api/app/user/internal/biz"
+
 	"strconv"
 	"time"
 )

@@ -8,6 +8,7 @@ package main
 import (
 	"parallelfun-api/app/server/internal/biz"
 	"parallelfun-api/app/server/internal/data"
+	"parallelfun-api/app/server/internal/discovery"
 	"parallelfun-api/app/server/internal/server"
 	"parallelfun-api/app/server/internal/service"
 	"parallelfun-api/conf"
@@ -19,5 +20,5 @@ import (
 
 // wireApp init kratos application.
 func wireApp(*conf.Server, *conf.Data, *conf.Registry, log.Logger) (*kratos.App, func(), error) {
-	panic(wire.Build(server.ProviderSet, data.ProviderSet, biz.ProviderSet, service.ProviderSet, newApp))
+	panic(wire.Build(server.ProviderSet, data.ProviderSet, biz.ProviderSet, service.ProviderSet, discovery.ProviderSet, newApp))
 }

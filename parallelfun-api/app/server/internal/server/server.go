@@ -10,6 +10,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"log"
+	clienthubv1 "parallelfun-api/api/clienthub/v1"
 	userv1 "parallelfun-api/api/user/v1"
 	"parallelfun-api/conf"
 )
@@ -21,6 +22,7 @@ var ProviderSet = wire.NewSet(
 	NewRegistrar,
 	NewDiscovery,
 	NewUserClient,
+	NewClientHubClient,
 )
 
 func NewUserClient(conf *conf.Registry, dis registry.Discovery) userv1.UserClient {
@@ -36,6 +38,19 @@ func NewUserClient(conf *conf.Registry, dis registry.Discovery) userv1.UserClien
 	cli := userv1.NewUserClient(conn)
 	return cli
 
+}
+
+func NewClientHubClient(dis registry.Discovery) clienthubv1.ClientHubClient {
+	conn, err := grpc.DialInsecure(context.Background(),
+		grpc.WithEndpoint("discovery:///parallelfun.service.clienthub.grpc"),
+		grpc.WithDiscovery(dis),
+	)
+	if err != nil {
+		log.Println("failed to dial:", err)
+		return nil
+	}
+	cli := clienthubv1.NewClientHubClient(conn)
+	return cli
 }
 func NewRegistrar(conf *conf.Registry) registry.Registrar {
 	return NewRegistryClient(conf)
