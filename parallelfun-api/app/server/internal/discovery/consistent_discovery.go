@@ -3,7 +3,6 @@ package discovery
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/registry"
-	"github.com/go-redis/redis/v8"
 	"parallelfun-api/app/server/internal/biz"
 )
 
@@ -15,9 +14,7 @@ const IsApplyConsistentHashKey contextKey = "isApplyConsistentHash"
 // 使用时：ctx.Value(ClientIDKey)
 
 type ConsistentDiscovery struct {
-	discovery registry.Discovery // Kratos原生服务发现（Nacos）
-	redis     *redis.Client      // Redis缓存
-	service   string             // 目标服务名
+	discovery registry.Discovery // Kratos原生服务发现
 	cHash     *biz.ConsistentHash
 }
 
@@ -46,11 +43,9 @@ func (d *ConsistentDiscovery) Watch(ctx context.Context, serviceName string) (re
 	return d.discovery.Watch(ctx, serviceName)
 }
 
-func NewConsistentDiscovery(d registry.Discovery, redis *redis.Client, serviceName string) *ConsistentDiscovery {
+func NewConsistentDiscovery(d registry.Discovery) *ConsistentDiscovery {
 	return &ConsistentDiscovery{
 		discovery: d,
-		redis:     redis,
-		service:   serviceName,
 		cHash:     biz.NewConsistentHash(128),
 	}
 }

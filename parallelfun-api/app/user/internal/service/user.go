@@ -31,14 +31,12 @@ func (s *UserService) GetUserById(ctx context.Context, req *pb.GetUserByIdReques
 	}
 
 	return &pb.GetUserByIdReply{
-		User: []*pb.UserInfo{
-			{
-				Id:    uint64(user.ID),
-				Name:  user.Name,
-				Gid:   user.GameId,
-				Email: user.Email,
-				Role:  int32(user.Role),
-			},
+		User: &pb.UserInfo{
+			Id:    uint64(user.ID),
+			Name:  user.Name,
+			Gid:   user.GameId,
+			Email: user.Email,
+			Role:  int32(user.Role),
 		},
 	}, nil
 }

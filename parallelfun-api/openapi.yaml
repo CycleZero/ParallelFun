@@ -46,6 +46,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/article.v1.NewArticleReply'
+    /v1/articles/media/upload:
+        post:
+            tags:
+                - Article
+            operationId: Article_UploadMedia
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/article.v1.UploadMediaRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/article.v1.UploadMediaReply'
     /v1/articles/title/{title}:
         get:
             tags:
@@ -753,7 +771,9 @@ components:
                     type: string
                 authorId:
                     type: string
-            description: NewArticle 相关消息
+            description: |-
+                NewArticle 相关消息
+                TODO关联媒体信息
         article.v1.UpdateArticleReply:
             type: object
             properties:
@@ -769,6 +789,20 @@ components:
                 content:
                     type: string
             description: UpdateArticle 相关消息
+        article.v1.UploadMediaReply:
+            type: object
+            properties:
+                url:
+                    type: string
+        article.v1.UploadMediaRequest:
+            type: object
+            properties:
+                UserId:
+                    type: string
+                FileName:
+                    type: string
+                Type:
+                    type: string
         user.v1.BatchGetUserByGameIdReply:
             type: object
             properties:
@@ -813,9 +847,7 @@ components:
             type: object
             properties:
                 user:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/user.v1.UserInfo'
+                    $ref: '#/components/schemas/user.v1.UserInfo'
         user.v1.LoginReply:
             type: object
             properties:

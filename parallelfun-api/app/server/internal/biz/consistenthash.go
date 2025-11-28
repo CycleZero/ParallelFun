@@ -45,7 +45,7 @@ func (c *ConsistentHash) Update(instances []*registry.ServiceInstance) {
 
 	// 添加新节点（从Kratos实例中提取ip:port）
 	for _, ins := range instances {
-		var node string // Kratos实例的Endpoint格式为 "ip:port"
+		var node string
 		for _, endpoint := range ins.Endpoints {
 			if strings.HasPrefix(endpoint, "grpc") {
 				u, err := url.Parse(endpoint)

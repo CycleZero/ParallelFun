@@ -8,13 +8,19 @@ import (
 )
 
 type ArticleUsecase struct {
-	repo        ArticleRepo
-	log         *log.Helper
-	minioClient *minio.Client
+	repo          ArticleRepo
+	log           *log.Helper
+	minioClient   *minio.Client
+	mediaInfoRepo MediaInfoRepo
 }
 
-func NewArticleUsecase(repo ArticleRepo, logger log.Logger, minioClient *minio.Client) *ArticleUsecase {
-	return &ArticleUsecase{repo: repo, log: log.NewHelper(logger), minioClient: minioClient}
+func NewArticleUsecase(repo ArticleRepo, logger log.Logger, minioClient *minio.Client, infoRepo MediaInfoRepo) *ArticleUsecase {
+	return &ArticleUsecase{
+		repo:          repo,
+		log:           log.NewHelper(logger),
+		minioClient:   minioClient,
+		mediaInfoRepo: infoRepo,
+	}
 }
 
 func (uc *ArticleUsecase) GetArticleById(ctx context.Context, id uint64) (*Article, error) {

@@ -51,6 +51,7 @@ service Article {
       body: "*"
     };
   }
+
 }
 
 message Author {

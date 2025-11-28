@@ -89,7 +89,7 @@ message GetUserByIdRequest {
   uint64 id = 1;
 }
 message GetUserByIdReply {
-  repeated UserInfo user= 1;
+  UserInfo user= 1;
 }
 
 message NewUserRequest{

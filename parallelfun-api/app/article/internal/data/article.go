@@ -15,14 +15,14 @@ type articleRepo struct {
 }
 
 func (r *articleRepo) FindAuthorById(ctx context.Context, id uint64) (*biz.Author, error) {
-	res, err := r.data.ucli.GetUser(ctx, &userv1.GetUserRequest{Id: id})
+	res, err := r.data.ucli.GetUserById(ctx, &userv1.GetUserByIdRequest{Id: id})
 	if err != nil {
 		return nil, err
 	}
 
 	return &biz.Author{
-		ID:   res.Id,
-		Name: res.Name,
+		ID:   res.GetUser().GetId(),
+		Name: res.GetUser().GetName(),
 	}, nil
 }
 

@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
-	"github.com/minio/minio-go/v7/pkg/credentials"
 	"parallelfun-api/app/article/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -20,7 +19,9 @@ import (
 var ProviderSet = wire.NewSet(NewData,
 	NewArticleRepo,
 	NewUserClient,
-	NewMinioClient,
+	NewMediaRepo,
+	NewCommentRepo,
+	NewUserRepo,
 )
 
 // Data .
@@ -35,7 +36,7 @@ func NewData(c *conf.Data, logger log.Logger, ucli userv1.UserClient, minioClien
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
-	dsn := "host=server.poyuan233.cn port=35432 user=root password=poyuan666 dbname=parallelfun port=35432 sslmode=disable TimeZone=Asia/Shanghai"
+	dsn := c.Database.Dsn
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -45,18 +46,6 @@ func NewData(c *conf.Data, logger log.Logger, ucli userv1.UserClient, minioClien
 		panic("failed to migrate database")
 	}
 	return &Data{db: db, ucli: ucli, minioClient: minioClient}, cleanup, nil
-}
-
-func NewMinioClient(c *conf.Data) *minio.Client {
-	minioClient, err := minio.New(c.Minio.Endpoint, &minio.Options{
-		Creds:  credentials.NewStaticV4(c.Minio.AccessKeyID, c.Minio.SecretAccessKey, ""),
-		Secure: c.Minio.UseSsl,
-	})
-	if err != nil {
-		log.Info("minio client error", err)
-		return nil
-	}
-	return minioClient
 }
 
 func NewUserClient(conf *conf.Registry, dis registry.Discovery) userv1.UserClient {

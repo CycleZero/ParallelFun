@@ -19,6 +19,18 @@ type ArticleRepo interface {
 	FindAuthorById(ctx context.Context, id uint64) (*Author, error)
 }
 
+type UserRepo interface {
+	FindByGid(ctx context.Context, name string) (*User, error)
+	FindById(ctx context.Context, id uint64) (*User, error)
+}
+
+type MediaInfoRepo interface {
+	BaseRepo[*MediaInfo]
+	FindByArticleId(ctx context.Context, articleId uint64) ([]*MediaInfo, error)
+	BatchSave(ctx context.Context, infos []*MediaInfo) ([]*MediaInfo, error)
+	DeleteByArticleId(ctx context.Context, articleId uint64) error
+}
+
 type VideoPostRepo interface {
 	BaseRepo[*VideoPost]
 	FindByName(ctx context.Context, name string) (*VideoPost, error)

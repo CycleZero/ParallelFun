@@ -9,13 +9,15 @@ type ServerUsecase struct {
 	log        *log.Helper
 	serverRepo ServerRepo
 	userRepo   UserRepo
+	serverApi  ServerApi
 }
 
-func NewServerUsecase(repo ServerRepo, logger log.Logger, userRepo UserRepo) *ServerUsecase {
+func NewServerUsecase(repo ServerRepo, logger log.Logger, userRepo UserRepo, serverApi ServerApi) *ServerUsecase {
 	return &ServerUsecase{
 		serverRepo: repo,
 		userRepo:   userRepo,
 		log:        log.NewHelper(log.With(logger, "module", "server/biz")),
+		serverApi:  serverApi,
 	}
 }
 

@@ -12,6 +12,7 @@ import (
 	"log"
 	clienthubv1 "parallelfun-api/api/clienthub/v1"
 	userv1 "parallelfun-api/api/user/v1"
+	"parallelfun-api/app/server/internal/discovery"
 	"parallelfun-api/conf"
 )
 
@@ -40,7 +41,7 @@ func NewUserClient(conf *conf.Registry, dis registry.Discovery) userv1.UserClien
 
 }
 
-func NewClientHubClient(dis registry.Discovery) clienthubv1.ClientHubClient {
+func NewClientHubClient(dis *discovery.ConsistentDiscovery) clienthubv1.ClientHubClient {
 	conn, err := grpc.DialInsecure(context.Background(),
 		grpc.WithEndpoint("discovery:///parallelfun.service.clienthub.grpc"),
 		grpc.WithDiscovery(dis),

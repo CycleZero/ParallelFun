@@ -19,11 +19,11 @@ func NewClientHubService(uc *biz.ClientHubUseCase) *ClientHubService {
 }
 
 func (s *ClientHubService) SendRpcCommand(ctx context.Context, req *pb.SendRpcCommandRequest) (*pb.SendRpcCommandReply, error) {
-	rpcreq := &biz.RpcRequest{
+	r := &biz.RpcRequest{
 		Method: req.Command,
 		Params: req.Params,
 	}
-	res, err := s.uc.SendRpcMsg(ctx, req.ClientId, rpcreq)
+	res, err := s.uc.SendRpcMsg(ctx, req.ClientId, r)
 	if err != nil {
 		return nil, err
 	}

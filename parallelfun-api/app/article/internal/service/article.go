@@ -91,6 +91,16 @@ func (s *ArticleService) GetArticleListByTitle(ctx context.Context, req *pb.GetA
 	return &pb.GetArticleListByTitleReply{}, nil
 }
 
+func (s *ArticleService) UploadMedia(ctx context.Context, req *pb.UploadMediaRequest) (*pb.UploadMediaReply, error) {
+	r, err := s.uc.GenerateUploadUrl(ctx, req.UserId, req.FileName, req.Type)
+	if err != nil {
+		return nil, err
+	}
+	return &pb.UploadMediaReply{
+		Url: r,
+	}, nil
+}
+
 func (s *ArticleService) toArticleInfo(ctx context.Context, article *biz.Article) *pb.ArticleInfo {
 	author, err := s.uc.GetAuthorById(ctx, article.AuthorID)
 	if err != nil {
